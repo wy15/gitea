@@ -21,7 +21,7 @@ WORKDIR ${GOPATH}/src/code.gitea.io/gitea
 #Checkout version if set
 RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi \
  && make clean build \
- && upx -best gitea
+ && upx --best gitea
 
 FROM alpine
 LABEL maintainer="maintainers@gitea.io"
