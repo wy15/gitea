@@ -11,7 +11,7 @@ ARG TAGS="sqlite sqlite_unlock_notify"
 ENV TAGS "bindata $TAGS"
 
 #Build deps
-RUN apk --no-cache add build-base git nodejs npm
+RUN apk --no-cache add build-base git nodejs npm upx
 
 #Setup repo
 #COPY . ${GOPATH}/src/code.gitea.io/gitea
@@ -20,7 +20,8 @@ WORKDIR ${GOPATH}/src/code.gitea.io/gitea
 
 #Checkout version if set
 RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi \
- && make clean build
+ && make clean build \
+ && upx -best gitea
 
 FROM alpine
 LABEL maintainer="maintainers@gitea.io"
