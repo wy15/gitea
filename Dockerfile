@@ -6,7 +6,7 @@ FROM golang:alpine AS build-env
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
 
-ARG GITEA_VERSION="v1.11.3"
+ARG GITEA_VERSION="v1.11.4"
 ARG TAGS="sqlite sqlite_unlock_notify"
 ENV TAGS "bindata $TAGS"
 
