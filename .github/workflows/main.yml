@@ -18,6 +18,6 @@ jobs:
         docker login -u ${{secrets.hub_name}} -p ${{secrets.hub_pass}}
         docker buildx build \
             -t mq83/gitea \
-            --platform linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le \
+            --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64,linux/ppc64le \
             . \
             --push
