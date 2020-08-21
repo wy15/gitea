@@ -1,7 +1,7 @@
 
 ###################################
 #Build stage
-FROM golang:1.14-alpine3.12 AS build-env
+FROM golang:1.15-alpine3.12 AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
@@ -15,7 +15,8 @@ ARG CGO_EXTRA_CFLAGS
 RUN apk --no-cache add build-base git nodejs npm
 
 #Setup repo
-COPY . ${GOPATH}/src/code.gitea.io/gitea
+#COPY . ${GOPATH}/src/code.gitea.io/gitea
+RUN git clone https://github.com/go-gitea/gitea.git ${GOPATH}/src/code.gitea.io/gitea
 WORKDIR ${GOPATH}/src/code.gitea.io/gitea
 
 #Checkout version if set
@@ -24,6 +25,7 @@ RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi \
 
 FROM alpine:3.12
 LABEL maintainer="maintainers@gitea.io"
+LABEL maintainer="mq83"
 
 EXPOSE 22 3000
 
