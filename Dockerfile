@@ -1,7 +1,7 @@
 
 ###################################
 #Build stage
-FROM golang:1.16-alpine3.12 AS build-env
+FROM golang:1.16-alpine3.13 AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
@@ -23,7 +23,7 @@ WORKDIR ${GOPATH}/src/code.gitea.io/gitea
 RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi \
  && make clean-all build
 
-FROM alpine:3.12
+FROM alpine:3.13
 LABEL maintainer="maintainers@gitea.io"
 LABEL maintainer="mq83"
 
@@ -40,7 +40,6 @@ RUN apk --no-cache add \
     s6 \
     sqlite \
     su-exec \
-    tzdata \
     gnupg
 
 RUN addgroup \
@@ -63,6 +62,6 @@ VOLUME ["/data"]
 ENTRYPOINT ["/usr/bin/entrypoint"]
 CMD ["/bin/s6-svscan", "/etc/s6"]
 
-COPY --from=build-env /go/src/code.gitea.io/gitea/docker/root /
 COPY --from=build-env /go/src/code.gitea.io/gitea/gitea /app/gitea/gitea
+COPY --from=build-env /go/src/code.gitea.io/gitea/environment-to-ini /usr/local/bin/environment-to-ini
 RUN ln -s /app/gitea/gitea /usr/local/bin/gitea
