@@ -23,6 +23,9 @@ WORKDIR ${GOPATH}/src/code.gitea.io/gitea
 RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi \
  && make clean-all build
 
+# Begin env-to-ini build
+RUN go build contrib/environment-to-ini/environment-to-ini.go
+
 FROM alpine:3.13
 LABEL maintainer="maintainers@gitea.io"
 LABEL maintainer="mq83"
